@@ -1,0 +1,30 @@
+#!/bin/bash -ex
+# executed before apply-overlay
+
+source $(dirname $0)/functions
+
+# use drush to download latest stable version of drupal 7
+drush --destination=/usr/share pm-download drupal --default-major=7 --drupal-project-rename=drupal7
+chown -R root:root /usr/share/drupal7
+
+# create the desired directory structure for drupal 7
+mkdir -p /etc/drupal7/
+mv /usr/share/drupal7/.htaccess /etc/drupal7/htaccess
+ln -s /etc/drupal7/htaccess /usr/share/drupal7/.htaccess
+mv /usr/share/drupal7/sites /etc/drupal7/
+ln -s /etc/drupal7/sites /usr/share/drupal7/
+mv /usr/share/drupal7/profiles /etc/drupal7/
+ln -s /etc/drupal7/profiles /usr/share/drupal7/
+
+mkdir -p /etc/drupal7/sites/all/libraries
+mkdir -p /var/lib/drupal7/files
+mkdir -p /var/lib/drupal7/private
+chown -R www-data:www-data /var/lib/drupal7
+chmod -R 2770 /var/lib/drupal7
+ln -s /var/lib/drupal7/files /usr/share/drupal7/
+ln -s /var/lib/drupal7/files /etc/drupal7/sites/default/
+
+# create helpful symlinks
+ln -s /usr/share/drupal7 /var/www/webroot
+ln -s /etc/drupal/7 /var/www/config
+

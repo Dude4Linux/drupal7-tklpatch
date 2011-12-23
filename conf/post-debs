@@ -1,0 +1,20 @@
+#!/bin/bash -ex
+# executed before apply-debs
+
+source $(dirname $0)/functions
+
+# install and setup drush using git
+cd /usr/local/share
+git clone http://git.drupal.org/project/drush.git
+cd drush
+git checkout $( git tag | sed -nr -e '/^7\.x-[0-9]+\.[0-9]+$/h;${g;p}' )  # latest stable 7.x drush release
+
+mkdir -p /etc/drush
+cat > /etc/drush/drushrc.php << EOF
+<?php
+// by default use the drupal root directory
+\$options['r'] = '/usr/share/drupal7';
+EOF
+
+ln -s /usr/local/share/drush/drush /usr/local/bin/drush
+
