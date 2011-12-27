@@ -2,6 +2,7 @@ admin_menu
 advanced_help
 backup_migrate
 recaptcha
+captcha-7.x-1.0-beta1
 ckeditor
 ctools
 date
