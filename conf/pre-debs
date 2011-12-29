@@ -12,10 +12,11 @@ install_updates
 # php5-cli            /* dependency of drupal shell drush */
 # php5-curl           /* dependency of drupal module simpletest */
 # php-pear, make      /* dependency of drupal7 PECL */
+# imagemagick         /* dependency of drupal module imageapi */
 # subversion          /* dependency of drush ckeditor-download */
-# wwwconfig-common    /* de[emdemcu of drush */
+# wwwconfig-common    /* dependency of drush */
 
-install php5 php5-cli php5-curl php5-gd php5-dev php5-xcache php-pear make subversion wwwconfig-common
+install php5 php5-cli php5-curl php5-gd php5-dev php5-xcache php-pear make imagemagick subversion wwwconfig-common
 
 # remove old kernel images after update
 cleanup_images
