@@ -21,7 +21,7 @@ install_updates() {
 }
 
 # remove all but most recent kernel images after update
-# this can be done safely because we're running chroot
+# warning: this only works when the chroot host kernel has been updated and rebooted
 cleanup_images() {
     dpkg -l 'linux-image-[2-9]*' | sed '/^ii/!d;s/^[^ ]* [^ ]* \([^ ]*\).*/\1/;/[0-9]/!d' | head -n -1 | xargs apt-get -y purge
 }
