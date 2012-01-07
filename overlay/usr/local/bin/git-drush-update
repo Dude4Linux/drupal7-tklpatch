@@ -1,9 +1,0 @@
-#!/bin/bash -e
-# use git to pull latest stable 7-x version of drush
-
-cd /usr/local/share/drush
-git checkout master
-git pull
-git checkout $( git tag | sed -nr -e '/^7\.x-[0-9]+\.[0-9]+$/h;${g;p}' )
-drush version
-

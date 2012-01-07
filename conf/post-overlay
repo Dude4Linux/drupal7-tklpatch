@@ -3,6 +3,41 @@
 
 source $(dirname $0)/functions
 
+# softlink for drush executable
+ln -s /usr/local/share/drush/drush /usr/local/bin/drush
+
+# use drush to download latest stable version of drupal 7
+drush -y --destination=/usr/share pm-download drupal --default-major=7 --drupal-project-rename=drupal7
+chown -R root:root /usr/share/drupal7
+mv /usr/share/drupal7/.htaccess /etc/drupal7/htaccess
+ln -s /etc/drupal7/htaccess /usr/share/drupal7/.htaccess
+
+# protect Drupal settings from prying eyes
+SETTINGS=/etc/drupal7/sites/default/settings.php
+cp /etc/drupal7/sites/default/default.settings.php $SETTINGS
+chown root:www-data $SETTINGS
+chmod 640 $SETTINGS
+
+# Disable Poor Man's Cron
+cat >> $SETTINGS << EOF
+
+/**
+ * Disable Poor Man's Cron:
+ *
+ * Drupal 7 enables the built-in Poor Man's Cron by default.
+ * Poor Man's Cron relies on site activity to trigger Drupal's cron,
+ * and is not well suited for low activity websites.
+ *
+ * We will use the Linux system cron and override Poor Man's Cron
+ * by setting the cron_safe_threshold to 0.
+ *
+ * To re-enable Poor Man's Cron:
+ *    Comment out (add a leading hash sign) the line below,
+ *    and the system cron in /etc/cron.d/drupal7.
+ */
+\$conf['cron_safe_threshold'] = 0;
+EOF
+
 # protect drupal7.conf from prying eyes
 chmod 600 /etc/dbconfig-common/drupal7.conf
 
@@ -33,31 +68,6 @@ sed -i "s/^memory_limit.*/memory_limit = 128M/" $CONF
 
 # drush site installation
 drush site-install standard -y --account-name=Admin --site-name=Drupal7 --db-su=root --db-su-pw='' --db-url=$dbc_dbtype://$dbc_dbuser:$dbc_dbpass@localhost/$dbc_dbname
-
-# Protect Drupal settings from prying eyes
-SETTINGS=/etc/drupal7/sites/default/settings.php
-chown root:www-data $SETTINGS
-chmod 640 $SETTINGS
-
-# Disable Poor Man's Cron
-cat >> $SETTINGS << EOF
-
-/**
- * Disable Poor Man's Cron:
- *
- * Drupal 7 enables the built-in Poor Man's Cron by default.
- * Poor Man's Cron relies on site activity to trigger Drupal's cron,
- * and is not well suited for low activity websites.
- *
- * We will use the Linux system cron and override Poor Man's Cron
- * by setting the cron_safe_threshold to 0.
- *
- * To re-enable Poor Man's Cron:
- *    Comment out (add a leading hash sign) the line below,
- *    and the system cron in /etc/cron.d/drupal7.
- */
-\$conf['cron_safe_threshold'] = 0;
-EOF
 
 # install additional modules
 xargs -a $(dirname $0)/add_modules drush pm-download
