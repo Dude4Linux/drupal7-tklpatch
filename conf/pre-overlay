@@ -21,5 +21,5 @@ ln -s /var/lib/drupal7/files /etc/drupal7/sites/default/
 
 # create helpful symlinks
 ln -s /usr/share/drupal7 /var/www/webroot
-ln -s /etc/drupal/7 /var/www/config
+ln -s /etc/drupal7 /var/www/config
 
