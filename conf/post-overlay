@@ -75,9 +75,6 @@ xargs -a $(dirname $0)/add_modules drush pm-download
 # set private file path
 drush variable-set --always-set file_private_path "/var/lib/drupal7/private"
 
-# disable powered-by Drupal block on all themes
-mysql -e "USE drupal7; UPDATE block SET status = '0' WHERE ( module = 'system' AND delta = 'powered-by' );"
-
 # install ckeditor backend
 drush -y pm-enable ckeditor
 drush ckeditor-download
