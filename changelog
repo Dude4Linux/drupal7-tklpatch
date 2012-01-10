@@ -1,27 +1,36 @@
 turnkey-drupal7-11.x-lucid (1) turnkey; urgency=low
 
-  * Drupal7:
+ * modified substitute.conf for better compatibility with Drupal themes
+ * updated to captcha-7.x-1.0-beta2
+ * fixed broken symlink
+ * changed to drush 5.0-dev installed via overlay instead of git
+ * added warning to function cleanup_images()
+ * added imagemagick to list of pre-installed packages (used by ImageAPI)
+ * added captcha-7.x-1.0-beta1 to list of pre-installed modules (required by recaptcha)
++* beta1 release of drupal7 patch for TurnKey LAMP appliance
 
-    - Based on turnkey-lamp-11.x-lucid appliance.
-    - Used git to install Drush.
-    - Used Drush to download and install Drupal.
-    - Included compatible modules from turnkey-drupal6, dropping those that were incompatible.
+ * Drupal7:
 
-  * Set Drupal admin password on firstboot (convenience, security). 
+   - Based on turnkey-lamp-11.x-lucid appliance.
+   - Used git to install Drush.
+   - Used Drush to download and install Drupal.
+   - Included compatible modules from turnkey-drupal6, dropping those that were incompatible.
 
-  * Added php-xcache PHP opcode cacher / optimizer (performance).
+ * Set Drupal admin password on firstboot (convenience, security). 
 
-  * Set ownership of modules and libraries to root (security).
+ * Added php-xcache PHP opcode cacher / optimizer (performance).
 
-  * Major component versions:
+ * Set ownership of modules and libraries to root (security).
 
-    drupal7         7.10
-    mysql-server    5.1.41-3ubuntu12.8
-    apache2         2.2.14-5ubuntu8.7
-    phpmyadmin      4:3.3.2-1
-    drush           4.5
+ * Major component versions:
 
-  * Note: Please refer to turnkey-core's changelog for changes common to all
-    appliances. Here we only describe changes specific to this appliance.
+   drupal7         7.10
+   mysql-server    5.1.41-3ubuntu12.8
+   apache2         2.2.14-5ubuntu8.7
+   phpmyadmin      4:3.3.2-1
+   drush           4.5
 
- -- John Carver <dude4linux@gmail.com>  Tue, 23 Dec 2011 11:05:00 -0600
+ * Note: Please refer to turnkey-core's changelog for changes common to all
+   appliances. Here we only describe changes specific to this appliance.
+
+-- John Carver <dude4linux@gmail.com>  Tue, 23 Dec 2011 11:05:00 -0600
