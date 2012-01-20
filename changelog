@@ -1,5 +1,6 @@
 turnkey-drupal7-11.x-lucid (1) turnkey; urgency=low
 
+ * reverted to drush 4.5 installed by pear with drush_make-6.x-2.3
  * added PATH to environment when running drush from cron per drush-5.0 recommendation
  * restored Powered by Drupal block modified by mod_substitute for TurnKey Linux
  * modified substitute.conf for better compatibility with Drupal themes

@@ -3,48 +3,13 @@
 
 source $(dirname $0)/functions
 
-# softlink for drush executable
-ln -s /usr/local/share/drush/drush /usr/local/bin/drush
-
-# use drush to download latest stable version of drupal 7
-drush -y --destination=/usr/share pm-download drupal --default-major=7 --drupal-project-rename=drupal7
-chown -R root:root /usr/share/drupal7
-mv /usr/share/drupal7/.htaccess /etc/drupal7/htaccess
-ln -s /etc/drupal7/htaccess /usr/share/drupal7/.htaccess
-
-# protect Drupal settings from prying eyes
-SETTINGS=/etc/drupal7/sites/default/settings.php
-cp /etc/drupal7/sites/default/default.settings.php $SETTINGS
-chown root:www-data $SETTINGS
-chmod 640 $SETTINGS
-
-# Disable Poor Man's Cron
-cat >> $SETTINGS << EOF
-
-/**
- * Disable Poor Man's Cron:
- *
- * Drupal 7 enables the built-in Poor Man's Cron by default.
- * Poor Man's Cron relies on site activity to trigger Drupal's cron,
- * and is not well suited for low activity websites.
- *
- * We will use the Linux system cron and override Poor Man's Cron
- * by setting the cron_safe_threshold to 0.
- *
- * To re-enable Poor Man's Cron:
- *    Comment out (add a leading hash sign) the line below,
- *    and the system cron in /etc/cron.d/drupal7.
- */
-\$conf['cron_safe_threshold'] = 0;
-EOF
-
 # protect drupal7.conf from prying eyes
 chmod 600 /etc/dbconfig-common/drupal7.conf
 
 # generate dbconfig for drupal7
 # drush does not use dbconfig.php, but edits settings.php directly
 # Leaving this here now for compatibility ???
-dbconfig-generate-include -f php -O root:www-data -m 640 /etc/dbconfig-common/drupal7.conf /etc/drupal7/sites/default/dbconfig.php
+# dbconfig-generate-include -f php -O root:www-data -m 640 /etc/dbconfig-common/drupal7.conf /etc/drupal7/sites/default/dbconfig.php
 
 # install uploadprogress bar (from PECL) (requested by Drupal 7)
 pecl install uploadprogress

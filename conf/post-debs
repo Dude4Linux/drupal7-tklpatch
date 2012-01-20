@@ -1,0 +1,25 @@
+#!/bin/bash -ex
+# executed before apply-debs
+
+source $(dirname $0)/functions
+
+# upgrade pear
+pear upgrade --force Console_Getopt
+pear upgrade --force pear
+pear upgrade-all
+
+# use pear to install drush
+# note: pear installs drush in /usr/share/php/drush and a drush wrapper in /usr/bin/drush
+pear channel-discover pear.drush.org
+pear install drush/drush
+
+# if drush version < 5.0, install drush_make-6.x-2.3
+[[ "$(drush -p version)" < "5.0" ]] && drush dl drush_make-6.x-2.3
+
+mkdir -p /etc/drush
+cat > /etc/drush/drushrc.php << EOF
+<?php
+// by default use the drupal root directory
+\$options['r'] = '/usr/share/drupal7';
+EOF
+

@@ -53,7 +53,7 @@ def main():
             "%s Password" % username.capitalize(),
             "Please enter new password for the Drupal %s account." % username)
 
-    command = '/usr/local/bin/drush user-password %s --password="%s"' % (username, password)
+    command = '/usr/bin/drush user-password %s --password="%s"' % (username, password)
 
     p = subprocess.Popen(command, shell=True)
     err = p.wait()
